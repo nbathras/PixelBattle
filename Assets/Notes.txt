@@ -1,0 +1,25 @@
+﻿Unit Structure:
+
+pfUnitAssultRifle
+- Components:
+-- WeaponScript
+-- UnitTypeHolder
+-- BoxCollider 2D
+-- HeathSystem
+-- Unit
+
+UnitTypeHolder Class:
+- UnitTypeSO
+- TeamSO
+
+UnitTypeSO
+- prefab to pfUnitAssultRifle
+- class Weapon
+-- int damage
+-- float bulletSpeed
+-- float bulletRange
+-- float bulletLifeSpan (ToDo: should just die after a little longer than the range)
+- speed
+- health
+
+// ToDo: Create a system to spawn units when button pressed

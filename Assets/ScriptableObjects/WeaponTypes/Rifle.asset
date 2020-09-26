@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaf40185e4d39074d8e4e2306cc734a3, type: 3}
-  m_Name: AssultUnit
+  m_Script: {fileID: 11500000, guid: fcafa29a60ca949fba33f0fc2198dda5, type: 3}
+  m_Name: Rifle
   m_EditorClassIdentifier: 
-  fireRate: 1.2
-  fireRange: 6
-  damage: 10
+  fireRate: 1
+  fireRange: 3
+  damage: 20
   bulletSpeed: 10
+  bulletLifeLength: 1

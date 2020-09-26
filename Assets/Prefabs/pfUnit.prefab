@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 6685716912087150833}
   - component: {fileID: -1115222152374024051}
   - component: {fileID: 7501057568835899971}
-  - component: {fileID: 2182747340492810747}
+  - component: {fileID: 1215617217937071061}
   m_Layer: 0
   m_Name: pfUnit
   m_TagString: Untagged
@@ -210,7 +210,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
---- !u!114 &2182747340492810747
+--- !u!114 &1215617217937071061
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -219,15 +219,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7541811106597704339}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8f01bdf0cfe09439de54e5db4f004e, type: 3}
+  m_Script: {fileID: 11500000, guid: b6c72ce57c1794415bada20fabadbc3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitType: {fileID: 0}
-  rangeRadius: 0
-  lookForTargetTimerMax: 0
-  shootTimerMax: 0
-  circleWidth: 0
-  segments: 50
+  weaponTypeSo: {fileID: 0}
 --- !u!1 &7541811107003959769
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +316,7 @@ GameObject:
   - component: {fileID: 8437942353730995414}
   - component: {fileID: 3390905062987395846}
   m_Layer: 0
-  m_Name: rangeCircle
+  m_Name: weaponRangeLR
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
