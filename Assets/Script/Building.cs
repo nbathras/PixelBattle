@@ -24,4 +24,8 @@ public class Building : MonoBehaviour {
     private void SpawnUnit() {
         UnitDataHolder.Create(transform.position, buildingDataHolder.unitTypeList[0], buildingDataHolder.buildingTeam);
     }
+
+    public float GetTimerNormalized() {
+        return timer / timerMax;
+    }
 }
