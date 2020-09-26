@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameRTSController : MonoBehaviour {
+public class UnitController : MonoBehaviour {
 
     [SerializeField] private Transform selectionAreaTransform;
     [SerializeField] private bool changeFormation = false;
 
     private Vector3 startPosition;
 
-    private List<UnitRTS> selectedUnitRTSList;
+    private List<Unit> selectedUnitList;
 
-    private void Awake() {
+    private void Start() {
         selectionAreaTransform.gameObject.SetActive(false);
 
-        selectedUnitRTSList = new List<UnitRTS>();
+        selectedUnitList = new List<Unit>();
     }
 
     private void Update() {
@@ -44,18 +44,18 @@ public class GameRTSController : MonoBehaviour {
 
             Collider2D[] collider2DArray = Physics2D.OverlapAreaAll(startPosition, UtilsClass.GetMouseWorldPosition());
 
-            foreach(UnitRTS unitRTS in selectedUnitRTSList) {
-                unitRTS.SetSelectedVisible(false);
+            foreach(Unit unit in selectedUnitList) {
+                unit.SetOutlineVisible(false);
             }
 
-            selectedUnitRTSList.Clear();
+            selectedUnitList.Clear();
 
             foreach (Collider2D collider2D in collider2DArray) {
-                UnitRTS unitRTS = collider2D.GetComponent<UnitRTS>();
+                Unit unit = collider2D.GetComponent<Unit>();
 
-                if (unitRTS != null && unitRTS.IsPlayerControllable()) {
-                    unitRTS.SetSelectedVisible(true);
-                    selectedUnitRTSList.Add(unitRTS);
+                if (unit != null && unit.IsPlayerControllable()) {
+                    unit.SetOutlineVisible(true);
+                    selectedUnitList.Add(unit);
                 }
             }
         }
@@ -66,15 +66,15 @@ public class GameRTSController : MonoBehaviour {
 
             List<Vector3> targetPositionList;
             if (changeFormation) {
-                targetPositionList = GetFormationListCircle(moveToPosition, selectedUnitRTSList.Count);
+                targetPositionList = GetFormationListCircle(moveToPosition, selectedUnitList.Count);
             } else {
-                targetPositionList = GetFormationListRectangle(moveToPosition, selectedUnitRTSList.Count, 2, 1);
+                targetPositionList = GetFormationListRectangle(moveToPosition, selectedUnitList.Count, 2, 1);
             }
 
             int targetPositionListIndex = 0;
 
-            foreach (UnitRTS unitRTS in selectedUnitRTSList) {
-                unitRTS.MoveTo(targetPositionList[targetPositionListIndex]);
+            foreach (Unit unit in selectedUnitList) {
+                unit.MoveTo(targetPositionList[targetPositionListIndex]);
                 targetPositionListIndex = (targetPositionListIndex + 1) % targetPositionList.Count;
             }
         }

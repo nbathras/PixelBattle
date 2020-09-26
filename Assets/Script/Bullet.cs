@@ -2,24 +2,25 @@
 using UnityEngine;
 
 public class Bullet : MonoBehaviour {
-    public static Bullet Create(Vector3 position, UnitRTS targetUnit, WeaponTypeSo weaponType) {
+    public static Bullet Create(Vector3 spawnPosition, Vector3 target, WeaponData weaponData) {
         Transform pfBullet = Resources.Load<Transform>("pfBullet");
-        Transform bulletTransform = Instantiate(pfBullet, position, Quaternion.identity);
+        Transform bulletTransform = Instantiate(pfBullet, spawnPosition, Quaternion.identity);
+
+        Vector3 moveDir = (target - bulletTransform.position).normalized;
 
         Bullet bullet = bulletTransform.GetComponent<Bullet>();
-        bullet.SetTarget(targetUnit);
-        bullet.SetWeaponType(weaponType);
+        bullet.Initalize(moveDir, weaponData);
 
         return bullet;
     }
 
-    private WeaponTypeSo weaponType;
-
+    private WeaponData weaponData;
     private Vector3 moveDir;
-    private float bulletLifeLength;
+
+    private float bulletLifeLength  = 2f;
 
     private void Update() {
-        transform.position += moveDir * weaponType.bulletSpeed * Time.deltaTime;
+        transform.position += moveDir * weaponData.bulletSpeed * Time.deltaTime;
         transform.eulerAngles = new Vector3(0f, 0f, UtilsClass.GetAngleFromVector(moveDir));
 
         bulletLifeLength -= Time.deltaTime;
@@ -28,21 +29,17 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    private void SetTarget(UnitRTS targetUnit) {
-        moveDir = (targetUnit.transform.position - transform.position).normalized;
-    }
-
-    private void SetWeaponType(WeaponTypeSo weaponType) {
-        this.weaponType = weaponType;
-        bulletLifeLength = weaponType.bulletLifeLength;
+    private void Initalize(Vector3 inMoveDir, WeaponData inWeaponData) {
+        moveDir = inMoveDir;
+        weaponData = inWeaponData;
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
-        UnitRTS enemy = collision.GetComponent<UnitRTS>();
+        Unit enemy = collision.GetComponent<Unit>();
 
         if (enemy != null) {
             // Hit an enemy!
-            enemy.GetComponent<HealthSystem>().Damage(weaponType.damage);
+            enemy.GetComponent<HealthSystem>().Damage(weaponData.damage);
             Destroy(gameObject);
         }
     }

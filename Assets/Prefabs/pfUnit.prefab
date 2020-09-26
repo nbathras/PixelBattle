@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6187931873019885992}
   - component: {fileID: 8209281954505313921}
   m_Layer: 0
-  m_Name: selectedSprite
+  m_Name: outlineSpriteRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92,11 +92,11 @@ GameObject:
   - component: {fileID: 7541811106597704338}
   - component: {fileID: -1551774957742434343}
   - component: {fileID: 4093787704782471931}
+  - component: {fileID: 8867587277327142458}
   - component: {fileID: -8599692491637677271}
   - component: {fileID: 6685716912087150833}
-  - component: {fileID: -1115222152374024051}
-  - component: {fileID: 7501057568835899971}
   - component: {fileID: 1215617217937071061}
+  - component: {fileID: 589077720890600596}
   m_Layer: 0
   m_Name: pfUnit
   m_TagString: Untagged
@@ -159,6 +159,20 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.25
+--- !u!114 &8867587277327142458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541811106597704339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cc5289d9bb4a3c498bfd9624986f296, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitType: {fileID: 0}
+  unitTeam: {fileID: 0}
 --- !u!114 &-8599692491637677271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ec3863231d198749b13c01c8b655590, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  team: {fileID: 0}
 --- !u!114 &6685716912087150833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,31 +198,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthAmountMax: 100
---- !u!114 &-1115222152374024051
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7541811106597704339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd073a70bb20ed44c88320df4ac63d1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7501057568835899971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7541811106597704339}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9e5782865ad33b43a92f59d2c10c1b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
 --- !u!114 &1215617217937071061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +210,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c72ce57c1794415bada20fabadbc3e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weaponTypeSo: {fileID: 0}
+--- !u!114 &589077720890600596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7541811106597704339}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ffc664513161424e8fdcf0ec8fcd794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7541811107003959769
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +233,7 @@ GameObject:
   - component: {fileID: 7541811107003959768}
   - component: {fileID: 7541811107003959771}
   m_Layer: 0
-  m_Name: sprite
+  m_Name: spriteRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -316,7 +315,7 @@ GameObject:
   - component: {fileID: 8437942353730995414}
   - component: {fileID: 3390905062987395846}
   m_Layer: 0
-  m_Name: weaponRangeLR
+  m_Name: weaponRangeLineRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
