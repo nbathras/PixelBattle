@@ -1,11 +1,15 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
 
 public class BuildingConstructionSelectUI : MonoBehaviour {
 
     // Test fields
     [SerializeField] private UnitTypeSO testUnitType;
+
+    // Instance
+    public static BuildingConstructionSelectUI instance;
 
     // Serialized
     [SerializeField] private Vector2 initialOffSet = new Vector2(75f, 75f);
@@ -21,10 +25,15 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
     private Transform btnTemplateQueue;
 
     // Other
-    private Dictionary<UnitTypeSO, Transform> btnTransformDictionary;
-    private Queue<ConstructionQueueEntry> constructionQueue; 
+    private List<Transform> unitConstructionOptionTransformList;
+    private List<Transform> unitConstructionQueueTransformList;
+    private Building selectedBuilding;
 
     private void Awake() {
+        if (instance == null) {
+            instance = this;
+        }
+
         ui = transform.Find("ui");
 
         // Get btn templates
@@ -37,32 +46,21 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
         btnTemplateQueue.gameObject.SetActive(false);
 
         // Initalize Data Structures
-        btnTransformDictionary = new Dictionary<UnitTypeSO, Transform>();
+        unitConstructionOptionTransformList = new List<Transform>();
+        unitConstructionQueueTransformList = new List<Transform>();
 
-        constructionQueue = new Queue<ConstructionQueueEntry>();
-
-        UpdateOptions();
+        HideUI();
     }
 
-    private void Update() {
-        if (Input.GetKeyDown(KeyCode.T)) {
-            AddConstructionQueueEntry();
+    public void UpdateUnitConstructionOptions() {
+        foreach (Transform t in unitConstructionOptionTransformList) {
+            Destroy(t.gameObject);
         }
-        if (Input.GetKeyDown(KeyCode.Y)) {
-            PopConstructionQueueEntry();
-        }
-        if (Input.GetKeyDown(KeyCode.H)) {
-            HideUI();
-        }
-        if (Input.GetKeyDown(KeyCode.J)) {
-            ShowUI();
-        }
-    }
 
-    private void UpdateOptions() {
-        UnitTypeListSO unitTypeList = Resources.Load<UnitTypeListSO>(typeof(UnitTypeListSO).Name);
+        unitConstructionOptionTransformList = new List<Transform>();
+
         int index = 0;
-        foreach (UnitTypeSO unitType in unitTypeList.list) {
+        foreach (UnitTypeSO unitType in selectedBuilding.GetConstructableUnits()) {
             Transform btnTransform = Instantiate(btnTemplateOption, transform);
             btnTransform.SetParent(optionContainer);
             btnTransform.gameObject.SetActive(true);
@@ -72,67 +70,49 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
             btnTransform.Find("text").GetComponent<Text>().text = unitType.name;
 
             btnTransform.GetComponent<Button>().onClick.AddListener(() => {
-                // Click here
+                instance.selectedBuilding.ConstructUnit(unitType);
             });
 
-            btnTransformDictionary[unitType] = btnTransform;
+            unitConstructionOptionTransformList.Add(btnTransform);
 
             index++;
         }
     }
 
-    private bool AddConstructionQueueEntry() {
-        if (constructionQueue.Count >= 5) {
-            return false;
-        }
-        Transform btnTransform = Instantiate(btnTemplateQueue, transform);
-        btnTransform.SetParent(queueContainer);
-        btnTransform.gameObject.SetActive(true);
-
-        btnTransform.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * constructionQueue.Count;
-
-        btnTransform.Find("text").GetComponent<Text>().text = testUnitType.name + constructionQueue.Count;
-
-        btnTransform.GetComponent<Button>().onClick.AddListener(() => {
-            // Click here
-        });
-
-        constructionQueue.Enqueue(new ConstructionQueueEntry(btnTransform, testUnitType));
-
-        return true;
-    }
-
-    private UnitTypeSO PopConstructionQueueEntry() {
-        if (constructionQueue.Count == 0) {
-            return null;
-        } 
-        ConstructionQueueEntry constructionQueueEntry = constructionQueue.Dequeue();
-        Destroy(constructionQueueEntry.btn.gameObject);
-
-        int index = 0;
-        foreach (ConstructionQueueEntry entry in constructionQueue) {
-            entry.btn.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * index;
-            index++;
+    public void UpdateUnitConstructionQueue() {
+        foreach (Transform t in unitConstructionQueueTransformList) {
+            Destroy(t.gameObject);
         }
 
-        return constructionQueueEntry.unitType;
-    }
+        unitConstructionQueueTransformList = new List<Transform>();
 
-    private class ConstructionQueueEntry {
-        public Transform btn;
-        public UnitTypeSO unitType;
+        List<UnitTypeSO> unitTypeList = selectedBuilding.GetConstructionQueue().ToList<UnitTypeSO>();
+        for (int i = 0; i < unitTypeList.Count; i++) {
+            Transform btnTransform = Instantiate(btnTemplateQueue, transform);
+            btnTransform.SetParent(queueContainer);
+            btnTransform.gameObject.SetActive(true);
 
-        public ConstructionQueueEntry(Transform inBtn, UnitTypeSO inUnitType) {
-            btn = inBtn;
-            unitType = inUnitType;
+            btnTransform.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * i;
+
+            btnTransform.Find("text").GetComponent<Text>().text = unitTypeList[i].name;
+
+            btnTransform.GetComponent<Button>().onClick.AddListener(() => {
+                // BuildingConstructionSelectUI.instance.AddConstructionQueueEntry(unitTypeList[i]);
+            });
+
+            unitConstructionQueueTransformList.Add(btnTransform);
         }
     }
 
     public void HideUI() {
         ui.gameObject.SetActive(false);
+        selectedBuilding = null;
     }
 
-    public void ShowUI() {
+    // ToDo: update container using events
+    public void ShowUI(Building building) {
+        selectedBuilding = building;
+        UpdateUnitConstructionOptions();
         ui.gameObject.SetActive(true);
     }
 }

@@ -2,6 +2,6 @@
 using UnityEngine;
 
 public class BuildingDataHolder : MonoBehaviour {
-    public List<UnitTypeSO> unitTypeList;
+    public List<UnitTypeSO> constructableUnits;
     public TeamSO buildingTeam;
 }

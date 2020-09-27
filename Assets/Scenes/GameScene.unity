@@ -2247,5 +2247,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: PCBuilding
       objectReference: {fileID: 0}
+    - target: {fileID: 3124955728649049725, guid: 08daa4c9112a87c49b9002302d275987,
+        type: 3}
+      propertyPath: constructableUnits.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3124955728649049725, guid: 08daa4c9112a87c49b9002302d275987,
+        type: 3}
+      propertyPath: constructableUnits.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 298181ce11319ab49b1e15480ec83be0,
+        type: 2}
+    - target: {fileID: 3124955728649049725, guid: 08daa4c9112a87c49b9002302d275987,
+        type: 3}
+      propertyPath: constructableUnits.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ad01ca3b26d3794c81a00510353f5b3,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08daa4c9112a87c49b9002302d275987, type: 3}
