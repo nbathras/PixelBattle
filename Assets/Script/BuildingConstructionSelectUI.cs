@@ -14,6 +14,7 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
     // [SerializeField] private Vector2 offsetQueue = new Vector2(-125f, 0f);
 
     // Set in Awake
+    private Transform ui;
     private Transform optionContainer;
     private Transform btnTemplateOption;
     private Transform queueContainer;
@@ -24,12 +25,14 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
     private Queue<ConstructionQueueEntry> constructionQueue; 
 
     private void Awake() {
+        ui = transform.Find("ui");
+
         // Get btn templates
-        optionContainer = transform.Find("optionContainer");
+        optionContainer = ui.Find("optionContainer");
         btnTemplateOption = optionContainer.Find("btnTemplateOption");
         btnTemplateOption.gameObject.SetActive(false);
 
-        queueContainer = transform.Find("queueContainer");
+        queueContainer = ui.Find("queueContainer");
         btnTemplateQueue = queueContainer.Find("btnTemplateQueue");
         btnTemplateQueue.gameObject.SetActive(false);
 
@@ -45,9 +48,14 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.T)) {
             AddConstructionQueueEntry();
         }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
+        if (Input.GetKeyDown(KeyCode.Y)) {
             PopConstructionQueueEntry();
+        }
+        if (Input.GetKeyDown(KeyCode.H)) {
+            HideUI();
+        }
+        if (Input.GetKeyDown(KeyCode.J)) {
+            ShowUI();
         }
     }
 
@@ -118,5 +126,13 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
             btn = inBtn;
             unitType = inUnitType;
         }
+    }
+
+    public void HideUI() {
+        ui.gameObject.SetActive(false);
+    }
+
+    public void ShowUI() {
+        ui.gameObject.SetActive(true);
     }
 }
