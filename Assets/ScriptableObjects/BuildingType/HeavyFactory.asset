@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db4ac39e62019564a824a36374ecc73e, type: 3}
+  m_Name: HeavyFactory
+  m_EditorClassIdentifier: 
+  constructableUnits:
+  - {fileID: 11400000, guid: 87fa6dc7dc47b3f45bacc0acfefd1867, type: 2}
+  spriteFoundation: {fileID: 2651033146736711166, guid: 7c23b97bcb555d44a81a120fb489e400,
+    type: 3}
+  prefab: {fileID: 1333819032985385394, guid: 677c7b3e8924170479226fab3f0288d2, type: 3}

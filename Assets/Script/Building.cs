@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(BuildingDataHolder))]
 public class Building : MonoBehaviour {
+
+    public EventHandler OnUnitConstructed;
+
     private BuildingDataHolder buildingDataHolder;
 
     private Queue<UnitTypeSO> constructionQueue;
@@ -23,35 +28,30 @@ public class Building : MonoBehaviour {
             if (timer < 0f) {
                 timer += timerMax;
                 SpawnUnit(constructionQueue.Dequeue());
-                BuildingConstructionSelectUI.instance.UpdateUnitConstructionQueue();
+                OnUnitConstructed?.Invoke(this, new EventArgs());
+                // Debug.Log(OnUnitConstructed?.GetInvocationList().Length);
             }
         }
     }
 
     private void SpawnUnit(UnitTypeSO unitType) {
-        UnitDataHolder.Create(transform.position, unitType, buildingDataHolder.buildingTeam);
+        Unit.Create(transform.position, unitType, buildingDataHolder.buildingTeam);
     }
 
     public float GetTimerNormalized() {
         return timer / timerMax;
     }
 
-    private void OnMouseOver() {
-        if (Input.GetMouseButtonDown(0)) {
-            BuildingConstructionSelectUI.instance.ShowUI(this);
-        }
-    }
-
     public void ConstructUnit(UnitTypeSO unitType) {
         constructionQueue.Enqueue(unitType);
-        BuildingConstructionSelectUI.instance.UpdateUnitConstructionQueue();
+        // BuildingConstructionSelectUI.instance.UpdateUnitConstructionQueue();
     }
 
-    public Queue<UnitTypeSO> GetConstructionQueue() {
-        return constructionQueue;
+    public List<UnitTypeSO> GetConstructionQueue() {
+        return constructionQueue.ToList();
     }
 
     public List<UnitTypeSO> GetConstructableUnits() {
-        return buildingDataHolder.constructableUnits;
+        return buildingDataHolder.buildingType.constructableUnits;
     }
 }

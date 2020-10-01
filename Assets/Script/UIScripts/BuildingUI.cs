@@ -1,16 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Linq;
 
-public class BuildingConstructionSelectUI : MonoBehaviour {
-
-    // Test fields
-    [SerializeField] private UnitTypeSO testUnitType;
-
-    // Instance
-    public static BuildingConstructionSelectUI instance;
-
+public class BuildingUI : BottomUI {
     // Serialized
     [SerializeField] private Vector2 initialOffSet = new Vector2(75f, 75f);
     // [SerializeField] private Vector2 initialOffsetQueue = new Vector2(-75f, 75f);
@@ -18,7 +11,7 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
     // [SerializeField] private Vector2 offsetQueue = new Vector2(-125f, 0f);
 
     // Set in Awake
-    private Transform ui;
+    // private Transform ui;
     private Transform optionContainer;
     private Transform btnTemplateOption;
     private Transform queueContainer;
@@ -29,19 +22,15 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
     private List<Transform> unitConstructionQueueTransformList;
     private Building selectedBuilding;
 
-    private void Awake() {
-        if (instance == null) {
-            instance = this;
-        }
-
-        ui = transform.Find("ui");
+    protected override void Awake() {
+        base.Awake();
 
         // Get btn templates
-        optionContainer = ui.Find("optionContainer");
+        optionContainer = GetUI().Find("optionContainer");
         btnTemplateOption = optionContainer.Find("btnTemplateOption");
         btnTemplateOption.gameObject.SetActive(false);
 
-        queueContainer = ui.Find("queueContainer");
+        queueContainer = GetUI().Find("queueContainer");
         btnTemplateQueue = queueContainer.Find("btnTemplateQueue");
         btnTemplateQueue.gameObject.SetActive(false);
 
@@ -50,6 +39,30 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
         unitConstructionQueueTransformList = new List<Transform>();
 
         HideUI();
+    }
+
+    private void Start() {
+        BuildingManager.Instance.OnBuildingSelectedChange += BuildingManager_OnBuildingSelectedChange;
+    }
+
+    private void BuildingManager_OnBuildingSelectedChange(object sender, BuildingManager.OnSelectedBuildingChangedEventArgs e) {
+        if (e.building == null) {
+            selectedBuilding.OnUnitConstructed -= Building_OnUnitConstructed;
+            selectedBuilding = null;
+            HideUI();
+        } else {
+            if (selectedBuilding != null) { selectedBuilding.OnUnitConstructed -= Building_OnUnitConstructed; }
+            e.building.OnUnitConstructed += Building_OnUnitConstructed;
+            selectedBuilding = e.building;
+            UpdateUnitConstructionOptions();
+            UpdateUnitConstructionQueue();
+            ShowUI();
+        }
+    }
+
+    private void Building_OnUnitConstructed(object sender, EventArgs e) {
+        UpdateUnitConstructionOptions();
+        UpdateUnitConstructionQueue();
     }
 
     public void UpdateUnitConstructionOptions() {
@@ -70,7 +83,8 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
             btnTransform.Find("text").GetComponent<Text>().text = unitType.name;
 
             btnTransform.GetComponent<Button>().onClick.AddListener(() => {
-                instance.selectedBuilding.ConstructUnit(unitType);
+                selectedBuilding.ConstructUnit(unitType);
+                UpdateUnitConstructionQueue();
             });
 
             unitConstructionOptionTransformList.Add(btnTransform);
@@ -86,33 +100,23 @@ public class BuildingConstructionSelectUI : MonoBehaviour {
 
         unitConstructionQueueTransformList = new List<Transform>();
 
-        List<UnitTypeSO> unitTypeList = selectedBuilding.GetConstructionQueue().ToList<UnitTypeSO>();
-        for (int i = 0; i < unitTypeList.Count; i++) {
+        int index = 0;
+        foreach (UnitTypeSO unitType in selectedBuilding.GetConstructionQueue()) {
             Transform btnTransform = Instantiate(btnTemplateQueue, transform);
             btnTransform.SetParent(queueContainer);
             btnTransform.gameObject.SetActive(true);
 
-            btnTransform.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * i;
+            btnTransform.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * index;
 
-            btnTransform.Find("text").GetComponent<Text>().text = unitTypeList[i].name;
+            btnTransform.Find("text").GetComponent<Text>().text = unitType.name;
 
             btnTransform.GetComponent<Button>().onClick.AddListener(() => {
                 // BuildingConstructionSelectUI.instance.AddConstructionQueueEntry(unitTypeList[i]);
             });
 
             unitConstructionQueueTransformList.Add(btnTransform);
+
+            index++;
         }
-    }
-
-    public void HideUI() {
-        ui.gameObject.SetActive(false);
-        selectedBuilding = null;
-    }
-
-    // ToDo: update container using events
-    public void ShowUI(Building building) {
-        selectedBuilding = building;
-        UpdateUnitConstructionOptions();
-        ui.gameObject.SetActive(true);
     }
 }

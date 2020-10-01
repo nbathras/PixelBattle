@@ -34,7 +34,7 @@ public class CameraHandler : MonoBehaviour {
     }
 
     private void HandleZoom() {
-        targetOrthographicSize += Input.mouseScrollDelta.y * zoomAmount;
+        targetOrthographicSize -= Input.mouseScrollDelta.y * zoomAmount;
         targetOrthographicSize = Mathf.Clamp(targetOrthographicSize, minOrthographicSize, maxOrthographicSize);
 
         orthographicSize = Mathf.Lerp(orthographicSize, targetOrthographicSize, Time.deltaTime * zoomSpeed);

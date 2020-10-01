@@ -9,14 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7bb13b9e9b935b34584ad95b4266968e, type: 3}
-  m_Name: Rifle
+  m_Script: {fileID: 11500000, guid: 8b8292cf7902b2948b734b5c55cbfca4, type: 3}
+  m_Name: BuildingTypeListSO
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7541811106597704339, guid: e2d12057e46aef44ea85d8fcdbacb675, type: 3}
-  speed: 5
-  health: 100
-  weapon:
-    damage: 20
-    bulletSpeed: 5
-    fireRate: 1
-    range: 6
+  list:
+  - {fileID: 11400000, guid: 163d271d6c1703744989a4394a7c0b81, type: 2}
+  - {fileID: 11400000, guid: f83f78f2390faad4fb8941b3e7d027d9, type: 2}

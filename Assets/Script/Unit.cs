@@ -4,6 +4,20 @@ using UnityEngine;
 [RequireComponent(typeof(MoveSystem))]
 [RequireComponent(typeof(UnitDataHolder))]
 public class Unit : MonoBehaviour {
+    public static GameObject Create(Vector3 spawnPosition, UnitTypeSO unitType, TeamSO unitTeam) {
+        GameObject unitGameObject = Instantiate(unitType.prefab, spawnPosition, Quaternion.identity).gameObject;
+
+        unitGameObject.SetActive(false);
+
+        Unit unit = unitGameObject.GetComponent<Unit>();
+        unit.unitDataHolder.unitTeam = unitTeam;
+        unit.UpdateTeamColor();
+
+        unitGameObject.SetActive(true);
+
+        return unitGameObject;
+    }
+
     // Set in Awake
     private UnitDataHolder unitDataHolder;
     private SpriteRenderer spriteRenderer;
@@ -24,8 +38,12 @@ public class Unit : MonoBehaviour {
     }
 
     private void Start() {
-        spriteRenderer.color = unitDataHolder.unitTeam.color;
         SetOutlineVisible(false);
+        UpdateTeamColor();
+    }
+
+    private void UpdateTeamColor() {
+        spriteRenderer.color = unitDataHolder.unitTeam.color;
     }
 
     public void Initalize(UnitTypeSO inUnitType, TeamSO inTeam) {
