@@ -7,5 +7,7 @@ public class UnitTypeSO : ScriptableObject {
     public float speed;
     public int health;
 
+    public Sprite sprite;
+
     public WeaponData weapon;
 }

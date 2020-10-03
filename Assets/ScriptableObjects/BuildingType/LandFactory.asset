@@ -16,6 +16,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 298181ce11319ab49b1e15480ec83be0, type: 2}
   - {fileID: 11400000, guid: 1ad01ca3b26d3794c81a00510353f5b3, type: 2}
   - {fileID: 11400000, guid: 87fa6dc7dc47b3f45bacc0acfefd1867, type: 2}
-  spriteFoundation: {fileID: 406806973654124419, guid: 83d98f0877dfa8b42bebe17cc193c4eb,
-    type: 3}
+  sprite: {fileID: 21300000, guid: ddcb06682c6dc1f49958023587c785c9, type: 3}
   prefab: {fileID: 1333819032985385394, guid: 08daa4c9112a87c49b9002302d275987, type: 3}
+  gridSizeX: 2
+  gridSizeY: 2

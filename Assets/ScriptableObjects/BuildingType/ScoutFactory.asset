@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db4ac39e62019564a824a36374ecc73e, type: 3}
   m_Name: ScoutFactory
   m_EditorClassIdentifier: 
-  constructableUnits: []
-  spriteFoundation: {fileID: 0}
-  prefab: {fileID: 0}
+  constructableUnits:
+  - {fileID: 11400000, guid: 1ad01ca3b26d3794c81a00510353f5b3, type: 2}
+  sprite: {fileID: 21300000, guid: 4c6d585ef6dd1a54c9bcfa94c200f37d, type: 3}
+  prefab: {fileID: 1333819032985385394, guid: 0321acfe9b1577649a7180ba6cb1c043, type: 3}
+  gridSizeX: 2
+  gridSizeY: 2

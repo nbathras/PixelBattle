@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bb13b9e9b935b34584ad95b4266968e, type: 3}
-  m_Name: Sniper
+  m_Name: Rocket
   m_EditorClassIdentifier: 
-  prefab: {fileID: 7541811106597704339, guid: c4205efb6c4d3d74087f541b44178422, type: 3}
+  prefab: {fileID: 7541811106597704339, guid: 44682ee593e0c9d4fbf97e72ef68123c, type: 3}
   speed: 5
   health: 100
-  sprite: {fileID: 21300000, guid: b62942115c8e08645a503ffe98117ab4, type: 3}
+  sprite: {fileID: 21300000, guid: 2030389379a87704aa91ba42e834e345, type: 3}
   weapon:
-    damage: 50
-    bulletSpeed: 15
-    fireRate: 3
-    range: 12
+    damage: 20
+    bulletSpeed: 5
+    fireRate: 1
+    range: 6

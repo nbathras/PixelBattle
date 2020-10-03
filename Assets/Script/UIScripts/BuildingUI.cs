@@ -80,7 +80,7 @@ public class BuildingUI : BottomUI {
 
             btnTransform.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * index;
 
-            btnTransform.Find("text").GetComponent<Text>().text = unitType.name;
+            btnTransform.Find("image").GetComponent<Image>().sprite = unitType.sprite;
 
             btnTransform.GetComponent<Button>().onClick.AddListener(() => {
                 selectedBuilding.ConstructUnit(unitType);
@@ -108,7 +108,7 @@ public class BuildingUI : BottomUI {
 
             btnTransform.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * index;
 
-            btnTransform.Find("text").GetComponent<Text>().text = unitType.name;
+            btnTransform.Find("image").GetComponent<Image>().sprite = unitType.sprite;
 
             btnTransform.GetComponent<Button>().onClick.AddListener(() => {
                 // BuildingConstructionSelectUI.instance.AddConstructionQueueEntry(unitTypeList[i]);
