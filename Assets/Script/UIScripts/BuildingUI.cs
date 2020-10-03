@@ -47,7 +47,7 @@ public class BuildingUI : BottomUI {
 
     private void BuildingManager_OnBuildingSelectedChange(object sender, BuildingManager.OnSelectedBuildingChangedEventArgs e) {
         if (e.building == null) {
-            selectedBuilding.OnUnitConstructed -= Building_OnUnitConstructed;
+            if (selectedBuilding != null) { selectedBuilding.OnUnitConstructed -= Building_OnUnitConstructed; }
             selectedBuilding = null;
             HideUI();
         } else {

@@ -6,8 +6,27 @@ using UnityEngine;
 [RequireComponent(typeof(BuildingDataHolder))]
 public class Building : MonoBehaviour {
 
+    public static GameObject Create(Vector3 spawnPosition, BuildingTypeSO buildingType, TeamSO buildingTeam) {
+        GameObject buildingGameObject = Instantiate(
+            buildingType.prefab,
+            spawnPosition,
+            Quaternion.identity
+        ).gameObject;
+
+        buildingGameObject.SetActive(false);
+
+        Building building = buildingGameObject.GetComponent<Building>();
+        building.buildingDataHolder.buildingTeam = buildingTeam;
+        building.UpdateTeamColor();
+
+        buildingGameObject.SetActive(true);
+
+        return buildingGameObject;
+    }
+
     public EventHandler OnUnitConstructed;
 
+    private SpriteRenderer spriteRenderer;
     private BuildingDataHolder buildingDataHolder;
 
     private Queue<UnitTypeSO> constructionQueue;
@@ -16,6 +35,8 @@ public class Building : MonoBehaviour {
     private float timerMax = 5;
 
     private void Awake() {
+        spriteRenderer = transform.Find("sprite").GetComponent<SpriteRenderer>();
+
         buildingDataHolder = GetComponent<BuildingDataHolder>();
         constructionQueue = new Queue<UnitTypeSO>();
 
@@ -32,6 +53,10 @@ public class Building : MonoBehaviour {
                 // Debug.Log(OnUnitConstructed?.GetInvocationList().Length);
             }
         }
+    }
+
+    private void UpdateTeamColor() {
+        spriteRenderer.color = buildingDataHolder.buildingTeam.color;
     }
 
     private void SpawnUnit(UnitTypeSO unitType) {

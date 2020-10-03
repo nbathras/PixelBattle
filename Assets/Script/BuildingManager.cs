@@ -1,9 +1,13 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class BuildingManager : MonoBehaviour {
 
     public static BuildingManager Instance { get; private set; }
+
+    [SerializeField]
+    private TeamSO playerControlledTeam;
 
     public EventHandler<OnSelectedBuildingChangedEventArgs> OnBuildingSelectedChange;
     public EventHandler<OnActiveBuildingTypeChangedEventsArgs> OnActiveBuildingTypeChanged;
@@ -16,44 +20,51 @@ public class BuildingManager : MonoBehaviour {
     }
 
     // Set in other
-    private Building selectedBuilding;
+    // private Building selectedBuilding;
     private BuildingTypeSO activeBuildingType;
+
+    private bool leftMouseReleased = true;
 
     private void Awake() {
         Instance = this;
     }
 
     private void Update() {
-        // Check for active building and placement 
-        if (activeBuildingType != null) {
+        // Left Click on Screen
+        if (Input.GetMouseButtonDown(0) && leftMouseReleased && !EventSystem.current.IsPointerOverGameObject()) {
+            leftMouseReleased = false;
 
-            if (Input.GetMouseButtonDown(0)) {
+            // Building Construction Selected
+            if (activeBuildingType != null) {
+                // Can Spawn Building
                 if (CanSpawnBuilding(activeBuildingType, UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY), out string errorMessage)) {
-                    Instantiate(activeBuildingType.prefab, UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY), Quaternion.identity);
+                    // Instantiate(activeBuildingType.prefab, UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY), Quaternion.identity);
+                    Building.Create(
+                        UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY),
+                        activeBuildingType,
+                        playerControlledTeam
+                    );
                     SetActiveBuildingType(null);
+                    return;
+                }
+            }
+
+            // Attempt to Click On Building
+            if (activeBuildingType == null) {
+                Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
+
+                RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
+                if (hit.collider != null) {
+                    OnBuildingSelectedChange?.Invoke(this, new OnSelectedBuildingChangedEventArgs() { building = hit.transform.GetComponent<Building>() });
+                } else {
+                    OnBuildingSelectedChange?.Invoke(this, new OnSelectedBuildingChangedEventArgs() { building = null });
                 }
             }
         }
 
-        // Check for Clicking on a Building
-        if (Input.GetMouseButton(0)) {
-            Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 mousePos2D = new Vector2(mousePos.x, mousePos.y);
-
-            RaycastHit2D hit = Physics2D.Raycast(mousePos2D, Vector2.zero);
-            if (hit.collider != null) {
-                Building newSelectedBuilding = hit.transform.GetComponent<Building>();
-                if (selectedBuilding == null && newSelectedBuilding == null) {
-                    return; // If nothing was selected and we select nothing do nothing
-                } else {
-                    if (newSelectedBuilding != null) {
-                        selectedBuilding = newSelectedBuilding;
-                    } else {
-                        selectedBuilding = null;
-                    }
-                    OnBuildingSelectedChange?.Invoke(this, new OnSelectedBuildingChangedEventArgs() { building = selectedBuilding });
-                }
-            }
+        if (Input.GetMouseButtonUp(0)) {
+            leftMouseReleased = true;
         }
 
         if (Input.GetKeyDown(KeyCode.Escape)) {
