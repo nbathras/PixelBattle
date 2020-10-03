@@ -8,6 +8,7 @@ public class UnitUI : BottomUI {
     [SerializeField] private Vector2 offset = new Vector2(125f, 0f);
 
     [SerializeField] private BuildingTypeListSO buildingTypeList;
+    [SerializeField] private Sprite cursorSprite;
 
     // private Transform ui;
     private Transform optionContainer;
@@ -35,15 +36,15 @@ public class UnitUI : BottomUI {
     private void Start() {
         int index = 0;
 
-        Transform btnEmpty = Instantiate(btnTemplateOption, transform);
-        btnEmpty.SetParent(optionContainer);
-        btnEmpty.gameObject.SetActive(true);
+        Transform btnCursor = Instantiate(btnTemplateOption, transform);
+        btnCursor.SetParent(optionContainer);
+        btnCursor.gameObject.SetActive(true);
 
-        btnEmpty.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * index;
+        btnCursor.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * index;
 
-        btnEmpty.Find("text").GetComponent<Text>().text = "Empty Arrow";
+        btnCursor.Find("image").GetComponent<Image>().sprite = cursorSprite;
 
-        btnEmpty.GetComponent<Button>().onClick.AddListener(() => {
+        btnCursor.GetComponent<Button>().onClick.AddListener(() => {
             BuildingManager.Instance.SetActiveBuildingType(null);
         });
 
@@ -56,7 +57,7 @@ public class UnitUI : BottomUI {
 
             btnTransform.GetComponent<RectTransform>().anchoredPosition = initialOffSet + offset * index;
 
-            btnTransform.Find("text").GetComponent<Text>().text = buildingType.name;
+            btnTransform.Find("image").GetComponent<Image>().sprite = buildingType.sprite;
 
             btnTransform.GetComponent<Button>().onClick.AddListener(() => {
                 BuildingManager.Instance.SetActiveBuildingType(buildingType);

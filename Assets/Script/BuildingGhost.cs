@@ -1,12 +1,14 @@
-﻿using CodeMonkey.Utils;
-using UnityEngine;
+﻿using UnityEngine;
 using static BuildingManager;
 
 public class BuildingGhost : MonoBehaviour {
 
-    private GameObject spriteFoundation;
+    private GameObject spriteGameObject;
+    private BuildingTypeSO activeBuildingType;
 
     private void Awake() {
+        spriteGameObject = transform.Find("sprite").gameObject;
+
         HideGhost();
     }
 
@@ -18,20 +20,24 @@ public class BuildingGhost : MonoBehaviour {
         if (e.activeBuildingType == null) {
             HideGhost();
         } else {
-            ShowGhost(e.activeBuildingType.spriteFoundation);
+            ShowGhost(e.activeBuildingType);
         }
     }
 
     private void Update() {
-        Vector2 mousePosition = UtilsClass.GetMouseWorldPosition();
-        Vector2 buildingPosition = new Vector2(
-            Mathf.RoundToInt(mousePosition.x),
-            Mathf.RoundToInt(mousePosition.y)
-        );
-        transform.position = buildingPosition;
+        if (activeBuildingType != null) {
+            transform.position = UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY);
+
+            if (BuildingManager.CanSpawnBuilding(activeBuildingType, UtilsClass.GetMouseWorldPosition())) {
+                ValidSpawnGhost();
+            } else {
+                InvalidSpawnGhost();
+            }
+        }
     }
 
-    private void ShowGhost(GameObject inSpriteFoundation) {
+    private void ShowGhost(BuildingTypeSO inActiveBuildingType) {
+        /*
         if (spriteFoundation != null) {
             Destroy(spriteFoundation);
         }
@@ -39,14 +45,28 @@ public class BuildingGhost : MonoBehaviour {
         spriteFoundation.transform.SetParent(transform);
         SetAlpha(.5f);
         spriteFoundation.SetActive(true);
+        */
+
+        spriteGameObject.SetActive(true);
+        spriteGameObject.GetComponent<SpriteRenderer>().sprite = inActiveBuildingType.sprite;
+        activeBuildingType = inActiveBuildingType;
     }
 
     private void HideGhost() {
-        if (spriteFoundation != null) {
-            spriteFoundation.SetActive(false);
-        }
+        spriteGameObject.SetActive(false);
     }
 
+    private void InvalidSpawnGhost() {
+        // TODO: cash the sprite renderer
+        spriteGameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f, .49f);
+    }
+
+    private void ValidSpawnGhost() {
+        // TODO: cash the sprite renderer
+        spriteGameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, .49f);
+    }
+
+    /*
     private void SetAlpha(float alpha) {
         SpriteRenderer[] children = GetComponentsInChildren<SpriteRenderer>();
         Color newColor;
@@ -56,4 +76,5 @@ public class BuildingGhost : MonoBehaviour {
             child.color = newColor;
         }
     }
+    */
 }

@@ -1,6 +1,4 @@
-﻿using CodeMonkey.Utils;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class BuildingManager : MonoBehaviour {
@@ -30,14 +28,8 @@ public class BuildingManager : MonoBehaviour {
         if (activeBuildingType != null) {
 
             if (Input.GetMouseButtonDown(0)) {
-                if (CanSpawnBuilding(UtilsClass.GetMouseWorldPosition())) {
-                    Vector2 mousePosition = UtilsClass.GetMouseWorldPosition();
-                    Vector2 buildingPosition = new Vector2(
-                        Mathf.RoundToInt(mousePosition.x),
-                        Mathf.RoundToInt(mousePosition.y)
-                    );
-
-                    Instantiate(activeBuildingType.prefab, buildingPosition, Quaternion.identity);
+                if (CanSpawnBuilding(activeBuildingType, UtilsClass.GetMouseWorldPosition())) {
+                    Instantiate(activeBuildingType.prefab, UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY), Quaternion.identity);
                     SetActiveBuildingType(null);
                 }
             }
@@ -69,7 +61,14 @@ public class BuildingManager : MonoBehaviour {
         }
     }
 
-    private bool CanSpawnBuilding(Vector3 vector3) {
+    // private bool CanSpawnBuilding(BuildingTypeSO buildingType, Vector3 vector3) {
+    public static bool CanSpawnBuilding(BuildingTypeSO inActiveBuilding, Vector3 vector3) {
+        /*
+        BoxCollider2D boxCollider2D = buildingType.prefab.GetComponent<BoxCollider2D>();
+
+        Collider2D[] collider2DArray = Physics2D.OverlapBoxAll(position + (Vector3)boxCollider2D.offset, boxCollider2D.size, 0);
+        */
+
         return true;
     }
 

@@ -1,5 +1,4 @@
-﻿using CodeMonkey.Utils;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Bullet : MonoBehaviour {
     public static Bullet Create(Vector3 spawnPosition, Vector3 target, WeaponData weaponData) {
