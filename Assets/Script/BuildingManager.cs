@@ -28,7 +28,7 @@ public class BuildingManager : MonoBehaviour {
         if (activeBuildingType != null) {
 
             if (Input.GetMouseButtonDown(0)) {
-                if (CanSpawnBuilding(activeBuildingType, UtilsClass.GetMouseWorldPosition())) {
+                if (CanSpawnBuilding(activeBuildingType, UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY), out string errorMessage)) {
                     Instantiate(activeBuildingType.prefab, UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY), Quaternion.identity);
                     SetActiveBuildingType(null);
                 }
@@ -61,13 +61,18 @@ public class BuildingManager : MonoBehaviour {
         }
     }
 
-    // private bool CanSpawnBuilding(BuildingTypeSO buildingType, Vector3 vector3) {
-    public static bool CanSpawnBuilding(BuildingTypeSO inActiveBuilding, Vector3 vector3) {
-        /*
-        BoxCollider2D boxCollider2D = buildingType.prefab.GetComponent<BoxCollider2D>();
+    public static bool CanSpawnBuilding(BuildingTypeSO inActiveBuilding, Vector3 inPosition, out string errorMessage) {
+        errorMessage = "";
 
-        Collider2D[] collider2DArray = Physics2D.OverlapBoxAll(position + (Vector3)boxCollider2D.offset, boxCollider2D.size, 0);
-        */
+        BoxCollider2D boxCollider2D = inActiveBuilding.prefab.GetComponent<BoxCollider2D>();
+        Collider2D[] collider2DArray = Physics2D.OverlapBoxAll(inPosition + (Vector3) boxCollider2D.offset, boxCollider2D.size, 0);
+
+        // Not clear
+        bool isAreaClear = collider2DArray.Length == 0;
+        if (!isAreaClear) {
+            errorMessage = "Area is not clear!";
+            return false;
+        }
 
         return true;
     }

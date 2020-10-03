@@ -3,11 +3,11 @@ using static BuildingManager;
 
 public class BuildingGhost : MonoBehaviour {
 
-    private GameObject spriteGameObject;
+    private SpriteRenderer spriteRenderer;
     private BuildingTypeSO activeBuildingType;
 
     private void Awake() {
-        spriteGameObject = transform.Find("sprite").gameObject;
+        spriteRenderer = transform.Find("sprite").GetComponent<SpriteRenderer>();
 
         HideGhost();
     }
@@ -28,7 +28,7 @@ public class BuildingGhost : MonoBehaviour {
         if (activeBuildingType != null) {
             transform.position = UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY);
 
-            if (BuildingManager.CanSpawnBuilding(activeBuildingType, UtilsClass.GetMouseWorldPosition())) {
+            if (BuildingManager.CanSpawnBuilding(activeBuildingType, UtilsClass.GetMouseGridPosition(activeBuildingType.gridSizeX, activeBuildingType.gridSizeY), out string errorMessage)) {
                 ValidSpawnGhost();
             } else {
                 InvalidSpawnGhost();
@@ -37,44 +37,20 @@ public class BuildingGhost : MonoBehaviour {
     }
 
     private void ShowGhost(BuildingTypeSO inActiveBuildingType) {
-        /*
-        if (spriteFoundation != null) {
-            Destroy(spriteFoundation);
-        }
-        spriteFoundation = Instantiate(inSpriteFoundation, transform.position, Quaternion.identity);
-        spriteFoundation.transform.SetParent(transform);
-        SetAlpha(.5f);
-        spriteFoundation.SetActive(true);
-        */
-
-        spriteGameObject.SetActive(true);
-        spriteGameObject.GetComponent<SpriteRenderer>().sprite = inActiveBuildingType.sprite;
+        spriteRenderer.gameObject.SetActive(true);
+        spriteRenderer.sprite = inActiveBuildingType.sprite;
         activeBuildingType = inActiveBuildingType;
     }
 
     private void HideGhost() {
-        spriteGameObject.SetActive(false);
+        spriteRenderer.gameObject.SetActive(false);
     }
 
     private void InvalidSpawnGhost() {
-        // TODO: cash the sprite renderer
-        spriteGameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 0f, 0f, .49f);
+        spriteRenderer.color = new Color(1f, 0f, 0f, .49f);
     }
 
     private void ValidSpawnGhost() {
-        // TODO: cash the sprite renderer
-        spriteGameObject.GetComponent<SpriteRenderer>().color = new Color(1f, 1f, 1f, .49f);
+        spriteRenderer.color = new Color(1f, 1f, 1f, .49f);
     }
-
-    /*
-    private void SetAlpha(float alpha) {
-        SpriteRenderer[] children = GetComponentsInChildren<SpriteRenderer>();
-        Color newColor;
-        foreach (SpriteRenderer child in children) {
-            newColor = child.color;
-            newColor.a = alpha;
-            child.color = newColor;
-        }
-    }
-    */
 }
